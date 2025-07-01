@@ -119,7 +119,9 @@ DNS:
 
 SMTP:
 		is an application layer protocol used to send, relay, forward email between email client and servers or two email servers.
-		Uses 587 port
+		Uses 25 port by default
+		SMTPS(465)
+		SMTP/TLS(587)
 
 		POP3:          Post Office Protocol
 			POP3 is a simple protocol to download emails from the server 
@@ -131,7 +133,138 @@ SMTP:
 			Everything is backed up.
 			Has become default standard for modern email servers
 	
-			
+SSH: Secure Shell / 22
+	is a network protocol that provides secure access to remote computer over an unsecured network.
+	Uses Asymettric encryption for initial handshake, after authentication all data is encrypted using shared session key.
+
+Proxing:
+	act of routing traffic through another server
+	2 types:
+		Forward proxy: client->proxy server->actual server  
+			:To visit regionally banned sites]
+		Reverse proxy: client -> actual server -> internal server
+			:Used for load balancing in web servers
+SOCKS5:
+	is a protocol-level proxy that forwards any kind of traffic without modifying it, doesn't encrypt it, but gives you IP masking, app-specific routing, DNS tunneling, and firewall evasion.
+		   Used by Developers for scraping data
+		   App-specific privacy (e.g., torrent apps)
+		   Low-latency, flexible traffic rerouting
+
+DNS Tunneling:
+**DNS tunneling is the practice of encoding data (commands, files, login info) inside DNS queries and responses**, turning the DNS protocol into a data transmission channel.
 
 
+How to Detect DNS Tunneling:
+Good SOC (Security Operations Center) practices look for:
 
+| Indicator                              | Why it’s Suspicious                        |
+| -------------------------------------- | ------------------------------------------ |
+| High number of DNS requests per second | Tunnels break files into many small chunks |
+| Long subdomain lengths                 | Encoded data increases domain length       |
+| Unusual TLDs or domains                | Like `.xyz`, `.tk`, `.cn`, etc.            |
+| Repeated lookups to same domain        | Used for constant contact with attacker    |
+| DNS over non-standard ports            | Might be trying to avoid detection         |
+
+VLAN:
+	is a logical subdivision of a physical network that allows devices to be grouped into separate **broadcast domains** at **Layer 2** (Data Link layer). Devices in different VLANs cannot communicate directly, even if connected to the same switch — communication between VLANs requires a **router** or **Layer 3 switch**. VLANs isolate traffic based on **MAC addresses**, and are configured using **VLAN IDs** on switches.
+Subnet:
+	is a logical segmentation of an IP network at **Layer 3** (Network layer), defined using **IP addresses and subnet masks (CIDR)**. Devices in different subnets are on different **IP broadcast domains**, and require a **router** for inter-subnet communication. Subnets isolate traffic at the **IP level**, and are typically used by **routers** to organize and route network traffic efficiently.
+
+Telnet:
+	is a protocol used to access remote computers or servers over TCP/IP protocol.
+		Transmitted data in plain text.
+		Problems:
+			Doesn't have Encryption
+			No authentication
+			Integrity (Detects tampering of data)
+
+CIA:
+	Confidentiality:
+		Prevent unauthorized access
+		Done by:
+			SSL/TLS
+			Role based access
+			MFA
+	Integrity:
+		Ensure data is not altered
+		Done by:
+			Checksums
+			Hashing
+			Constraints like foreign key
+	Availabillity:
+		Ensure data is available when needed
+		Done by:
+			Implementing disaster recovery, backups
+			firewalls, rate limit apis, detect and neutralize DDoS
+
+MAC:
+	is a short piece of information that ensures integrity and authenticity.
+	Ensures message is not tampered and was sent by authenticated person who knows the shared secret key.
+	examples: JWT
+
+DHCP:
+	is a network management protocol used to assign ip address to devices connecting to the network.
+	Solves:
+		Assigns IP address
+		Provides subnet mask
+		Shares default gateway
+		Supplies DNS server info
+
+FTP:
+	is a protocol used to transfer files between two devices connected over a network.
+	Two connection:
+		Control connection - handles FTP commands (GET, PUT) - port 21
+		Data connection - transfers files
+			Active Data Connection:
+				server initiates session
+			Passive Data Connection:
+				client initiates session
+	Data sent as plain text
+	Uses TCP/IP so, reliable
+
+FTPS:
+	FTP + SSL/TLS
+	Adds encryption to FTP
+		Explicit FTPS - Client requests Encryption using Auth TLS command
+		Implicit FTPS - Encryption starts automatically | on different port(usually port 900)
+SFTP:
+	Not related to FTP or FTPS, despite the name.
+	It is completly different protocol built as part of ssh.
+	Operates over port 22, uses single connection for commands and data transfer
+
+ICMP: Internet Control Message Protocol
+	used only to report succes or failure of communication between network devices.
+
+Ping:
+	used to test network connectivity
+	More delay means, problem with network or server. If server, sign of DDoS
+	ping google.com
+traceroute:
+	used to see the path / hops made by packet reach specific server.
+	traceroute google.com
+
+
+whois <ipaddress>
+geoiplookup <ipaddress>
+ip a 
+ip route (shows routers address)
+curl ipconfig.me  (shows routers pubic ip)
+
+Stolen JWT:
+	What is someone steals the JWT and performs abnormal activities: here JWT is used to track any user?
+		From the request made to our server, we can see the client information such as browser, OS, geolocation,time. If we notice sudden changes on these informations what should SOC have to do?
+			-> Invalidate or blacklist suspected JWT
+			-> Re-authenticate user by force logout or token refresh
+			-> Investigate how the token has stolen
+		
+		If the attacker uses same client applications and routes his traffic through VPNs at actual users geolocation, It'd difficult to trace. Here what should we do?
+			-> Use tools like FingerprintJS to deep analyze subtle differences such as font size, screen resolution, webGL support, etc.
+			-> 
+		
+		Talking about mitigating this issue: how can we detect and resolve this issue?
+
+we can flag this user and keep an eye on his activities.
+check through his past activities, detect any abnormality in his recent sessions or privilage escalation activities, we can flag this user .......... . 
+If we encounter such abnormality, we can ask them to relogin, force a password reset, ask them to enable MFA, send a security alert to actual email.
+
+how RSA, AES works?
